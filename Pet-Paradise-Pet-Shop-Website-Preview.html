@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pet Paradise - සුරතල් සතුන්ගේ ස්වර්ගය</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@300;400;500;600;700&display=swap');
+    
+    * {
+      font-family: 'Noto Sans Sinhala', sans-serif;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    .hero-gradient {
+      background: linear-gradient(135deg, #ff7a18 0%, #af002d 50%, #14b8a6 100%);
+    }
+    
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+    
+    .card-hover:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+    }
+    
+    .btn-primary {
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+      transform: scale(1.05);
+    }
+    
+    .toast {
+      animation: slideIn 0.3s ease forwards;
+    }
+    
+    @keyframes slideIn {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    @keyframes slideOut {
+      to {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 overflow-x-hidden">
+  
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed top-20 right-4 z-[100] space-y-2"></div>
+  
+  <!-- Header / Navbar -->
+  <header class="bg-white shadow-md sticky top-0 z-50">
+    <nav class="container mx-auto px-4 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <i class="fas fa-paw text-3xl text-orange-500"></i>
+          <h1 class="text-2xl font-bold text-teal-600">Pet Paradise</h1>
+        </div>
+        
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="#home" class="hover:text-orange-500 transition">මුල් පිටුව</a>
+          <a href="#services" class="hover:text-orange-500 transition">සේවා</a>
+          <a href="#products" class="hover:text-orange-500 transition">නිෂ්පාදන</a>
+          <a href="#about" class="hover:text-orange-500 transition">අප ගැන</a>
+          <a href="#contact" class="hover:text-orange-500 transition">සම්බන්ධ වන්න</a>
+          <button id="cart-btn" class="relative bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600 transition">
+            <i class="fas fa-shopping-cart"></i>
+            <span id="cart-count" class="absolute -top-2 -right-2 bg-orange-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">0</span>
+          </button>
+        </div>
+        
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-btn" class="md:hidden text-2xl text-teal-600">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+      
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4 space-y-3">
+        <a href="#home" class="block hover:text-orange-500 transition">මුල් පිටුව</a>
+        <a href="#services" class="block hover:text-orange-500 transition">සේවා</a>
+        <a href="#products" class="block hover:text-orange-500 transition">නිෂ්පාදන</a>
+        <a href="#about" class="block hover:text-orange-500 transition">අප ගැන</a>
+        <a href="#contact" class="block hover:text-orange-500 transition">සම්බන්ධ වන්න</a>
+        <button id="cart-btn-mobile" class="w-full bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600 transition">
+          <i class="fas fa-shopping-cart"></i> කරත්තය <span id="cart-count-mobile">0</span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero-gradient text-white py-16 md:py-24">
+    <div class="container mx-auto px-4">
+      <div class="grid md:grid-cols-2 gap-8 items-center">
+        <div class="text-center md:text-left">
+          <h2 class="text-4xl md:text-6xl font-bold mb-4 leading-tight">
+            ඔබේ සුරතලාට හොඳම සැලකිල්ල
+          </h2>
+          <p class="text-lg md:text-xl mb-8 opacity-90">
+            ශ්‍රී ලංකාවේ විශ්වාසනීයම සුරතල් සතුන් සාප්පුව - ආහාර, උපාංග සහ විශේෂඥ සේවා
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+            <a href="#products" class="bg-white text-orange-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition btn-primary text-center">
+              දැන්ම මිලදී ගන්න
+            </a>
+            <a href="#services" class="border-2 border-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-orange-600 transition btn-primary text-center">
+              සේවා බලන්න
+            </a>
+          </div>
+        </div>
+        <div class="flex justify-center">
+          <div class="bg-white/20 backdrop-blur-lg rounded-3xl p-8 md:p-12">
+            <i class="fas fa-dog text-8xl md:text-9xl text-white/90"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services" class="py-16 md:py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h3 class="text-3xl md:text-4xl font-bold text-gray-800 mb-3">අපගේ සේවා</h3>
+        <p class="text-gray-600 text-lg">ඔබේ සුරතලාට අවශ්‍ය සියලු සේවා එකම තැනකින්</p>
+      </div>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <!-- Service 1 -->
+        <div class="bg-gradient-to-br from-orange-50 to-teal-50 p-6 md:p-8 rounded-2xl shadow-lg card-hover">
+          <div class="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mb-4">
+            <i class="fas fa-cut text-white text-2xl"></i>
+          </div>
+          <h4 class="text-xl font-bold mb-3 text-gray-800">ග්‍රූමින් සේවා</h4>
+          <p class="text-gray-600 mb-4">වෘත්තීය ග්‍රූමින්, නහවීම, නියපොතු කැපීම සහ තවත්</p>
+          <p class="text-teal-600 font-semibold">රු. 2,500 සිට</p>
+        </div>
+        
+        <!-- Service 2 -->
+        <div class="bg-gradient-to-br from-orange-50 to-teal-50 p-6 md:p-8 rounded-2xl shadow-lg card-hover">
+          <div class="w-16 h-16 bg-teal-500 rounded-full flex items-center justify-center mb-4">
+            <i class="fas fa-bone text-white text-2xl"></i>
+          </div>
+          <h4 class="text-xl font-bold mb-3 text-gray-800">සුරතල් ආහාර</h4>
+          <p class="text-gray-600 mb-4">උසස් තත්ත්වයේ වියළි සහ තෙත් ආහාර වර්ග</p>
+          <p class="text-teal-600 font-semibold">රු. 1,200 සිට</p>
+        </div>
+        
+        <!-- Service 3 -->
+        <div class="bg-gradient-to-br from-orange-50 to-teal-50 p-6 md:p-8 rounded-2xl shadow-lg card-hover">
+          <div class="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mb-4">
+            <i class="fas fa-collar text-white text-2xl"></i>
+          </div>
+          <h4 class="text-xl font-bold mb-3 text-gray-800">උපාංග</h4>
+          <p class="text-gray-600 mb-4">කරපටි, පටි, ඇඳුම්, සෙල්ලම් බඩු සහ තවත්</p>
+          <p class="text-teal-600 font-semibold">රු. 800 සිට</p>
+        </div>
+        
+        <!-- Service 4 -->
+        <div class="bg-gradient-to-br from-orange-50 to-teal-50 p-6 md:p-8 rounded-2xl shadow-lg card-hover">
+          <div class="w-16 h-16 bg-teal-500 rounded-full flex items-center justify-center mb-4">
+            <i class="fas fa-stethoscope text-white text-2xl"></i>
+          </div>
+          <h4 class="text-xl font-bold mb-3 text-gray-800">පශු වෛද්‍ය උපදේශන</h4>
+          <p class="text-gray-600 mb-4">පළපුරුදු වෛද්‍යවරුන්ගෙන් සෞඛ්‍ය පරීක්ෂණ</p>
+          <p class="text-teal-600 font-semibold">රු. 3,000 සිට</p>
+        </div>
+        
+        <!-- Service 5 -->
+        <div class="bg-gradient-to-br from-orange-50 to-teal-50 p-6 md:p-8 rounded-2xl shadow-lg card-hover">
+          <div class="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mb-4">
+            <i class="fas fa-heart text-white text-2xl"></i>
+          </div>
+          <h4 class="text-xl font-bold mb-3 text-gray-800">සුරතල් දරුකමට හදාගැනීම</h4>
+          <p class="text-gray-600 mb-4">ආදරණීය නිවසක් අවශ්‍ය සුරතලුන් හදාගන්න</p>
+          <p class="text-teal-600 font-semibold">නොමිලේ උපදේශන</p>
+        </div>
+        
+        <!-- Service 6 -->
+        <div class="bg-gradient-to-br from-orange-50 to-teal-50 p-6 md:p-8 rounded-2xl shadow-lg card-hover">
+          <div class="w-16 h-16 bg-teal-500 rounded-full flex items-center justify-center mb-4">
+            <i class="fas fa-home text-white text-2xl"></i>
+          </div>
+          <h4 class="text-xl font-bold mb-3 text-gray-800">බෝඩින් සේවා</h4>
+          <p class="text-gray-600 mb-4">ඔබ නිවසින් බැහැරව සිටින විට ආරක්ෂිත නවාතැන්</p>
+          <p class="text-teal-600 font-semibold">දිනකට රු. 1,500 සිට</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Products Section -->
+  <section id="products" class="py-16 md:py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h3 class="text-3xl md:text-4xl font-bold text-gray-800 mb-3">ජනප්‍රිය නිෂ්පාදන</h3>
+        <p class="text-gray-600 text-lg">ඔබේ සුරතලා සඳහා හොඳම නිෂ්පාදන</p>
+      </div>
+      
+      <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- Products will be loaded by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- About Us Section -->
+  <section id="about" class="py-16 md:py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+        <div class="order-2 md:order-1">
+          <h3 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6">Pet Paradise ගැන</h3>
+          <p class="text-gray-600 mb-4 text-lg leading-relaxed">
+            2015 සිට ශ්‍රී ලංකාවේ සුරතල් සතුන් ලෝලීන්ගේ විශ්වාසය දිනාගත් Pet Paradise, ඔබේ ආදරණීය සුරතලාට හොඳම සැලකිල්ල ලබා දීමට කැපවී සිටී.
+          </p>
+          <p class="text-gray-600 mb-6 text-lg leading-relaxed">
+            අපි උසස් තත්ත්වයේ ආහාර, උපාංග, සහ වෘත්තීය සේවා සපයන අතර, සෑම සුරතලෙකුටම ආදරයෙන් සලකමු.
+          </p>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="bg-orange-50 p-4 rounded-lg text-center">
+              <h4 class="text-3xl font-bold text-orange-600">5000+</h4>
+              <p class="text-gray-600 text-sm">සතුටු පාරිභෝගිකයින්</p>
+            </div>
+            <div class="bg-teal-50 p-4 rounded-lg text-center">
+              <h4 class="text-3xl font-bold text-teal-600">8+</h4>
+              <p class="text-gray-600 text-sm">වසරක අත්දැකීම්</p>
+            </div>
+          </div>
+        </div>
+        <div class="order-1 md:order-2">
+          <div class="bg-gradient-to-br from-orange-400 to-teal-400 rounded-3xl p-8 md:p-12 text-white text-center">
+            <i class="fas fa-paw text-6xl md:text-8xl mb-4 opacity-90"></i>
+            <h4 class="text-2xl md:text-3xl font-bold">ආදරයෙන් රැකබලා ගනිමු</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-16 md:py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h3 class="text-3xl md:text-4xl font-bold text-gray-800 mb-3">අප හා සම්බන්ධ වන්න</h3>
+        <p class="text-gray-600 text-lg">ඔබගේ ප්‍රශ්න සහ යෝජනා අපට යොමු කරන්න</p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <!-- Contact Info -->
+        <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg">
+          <h4 class="text-2xl font-bold mb-6 text-gray-800">සම්බන්ධතා තොරතුරු</h4>
+          <div class="space-y-4">
+            <div class="flex items-start space-x-4">
+              <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <i class="fas fa-map-marker-alt text-orange-600"></i>
+              </div>
+              <div>
+                <h5 class="font-semibold text-gray-800">ලිපිනය</h5>
+                <p class="text-gray-600">අංක 123, ගාලු පාර, කොළඹ 03, ශ්‍රී ලංකාව</p>
+              </div>
+            <div class="flex items-start space-x-4">
+              <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <i class="fas fa-phone text-teal-600"></i>
+              </div>
+              <div>
+                <h5 class="font-semibold text-gray-800">දුරකථන</h5>
+                <p class="text-gray-600">+94 11 234 5678</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-4">
+              <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <i class="fas fa-envelope text-orange-600"></i>
+              </div>
+              <div>
+                <h5 class="font-semibold text-gray-800">විද්‍යුත් තැපෑල</h5>
+                <p class="text-gray-600">info@petparadise.lk</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-4">
+              <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <i class="fas fa-clock text-teal-600"></i>
+              </div>
+              <div>
+                <h5 class="font-semibold text-gray-800">විවෘත වේලාවන්</h5>
+                <p class="text-gray-600">සඳුදා - සෙනසුරාදා: පෙ.ව. 9:00 - ප.ව. 7:00</p>
+                <p class="text-gray-600">ඉරිදා: පෙ.ව. 10:00 - ප.ව. 5:00</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Contact Form -->
+        <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg">
+          <form id="contact-form" class="space-y-4">
+            <div>
+              <label class="block text-gray-700 font-semibold mb-2">නම *</label>
+              <input type="text" id="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="ඔබගේ නම">
+              <span class="text-red-500 text-sm hidden" id="name-error">නම ඇතුළත් කරන්න</span>
+            </div>
+            <div>
+              <label class="block text-gray-700 font-semibold mb-2">විද්‍යුත් තැපෑල *</label>
+              <input type="email" id="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="your@email.com">
+              <span class="text-red-500 text-sm hidden" id="email-error">වලංගු විද්‍යුත් තැපෑලක් ඇතුළත් කරන්න</span>
+            </div>
+            <div>
+              <label class="block text-gray-700 font-semibold mb-2">දුරකථන අංකය *</label>
+              <input type="tel" id="phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="07X XXX XXXX">
+              <span class="text-red-500 text-sm hidden" id="phone-error">දුරකථන අංකය ඇතුළත් කරන්න</span>
+            </div>
+            <div>
+              <label class="block text-gray-700 font-semibold mb-2">පණිවිඩය *</label>
+              <textarea id="message" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="ඔබගේ පණිවිඩය මෙහි ලියන්න"></textarea>
+              <span class="text-red-500 text-sm hidden" id="message-error">පණිවිඩය ඇතුළත් කරන්න</span>
+            </div>
+            <button type="submit" class="w-full bg-gradient-to-r from-orange-500 to-teal-500 text-white py-3 rounded-lg font-semibold hover:opacity-90 transition btn-primary">
+              පණිවිඩය යවන්න
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="grid md:grid-cols-4 gap-8 mb-8">
+        <div>
+          <div class="flex items-center space-x-2 mb-4">
+            <i class="fas fa-paw text-2xl text-orange-500"></i>
+            <h4 class="text-xl font-bold">Pet Paradise</h4>
+          </div>
+          <p class="text-gray-400">ශ්‍රී ලංකාවේ විශ්වාසනීයම සුරතල් සතුන් සාප්පුව</p>
+        </div>
+        <div>
+          <h5 class="font-bold mb-4">ඉක්මන් සබැඳි</h5>
+          <ul class="space-y-2 text-gray-400">
+            <li><a href="#home" class="hover:text-orange-500 transition">මුල් පිටුව</a></li>
+            <li><a href="#services" class="hover:text-orange-500 transition">සේවා</a></li>
+            <li><a href="#products" class="hover:text-orange-500 transition">නිෂ්පාදන</a></li>
+            <li><a href="#about" class="hover:text-orange-500 transition">අප ගැන</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="font-bold mb-4">සේවා</h5>
+          <ul class="space-y-2 text-gray-400">
+            <li>ග්‍රූමින්</li>
+            <li>පශු වෛද්‍ය උපදේශන</li>
+            <li>සුරතල් දරුකමට හදාගැනීම</li>
+            <li>බෝඩින් සේවා</li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="font-bold mb-4">අපව අනුගමනය කරන්න</h5>
+          <div class="flex space-x-4">
+            <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-orange-500 transition">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-orange-500 transition">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-teal-500 transition">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-teal-500 transition">
+              <i class="fab fa-youtube"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 pt-8 text-center text-gray-400">
+        <p>&copy; 2024 Pet Paradise. සියලු හිමිකම් ඇවිරිණි.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Cart Modal -->
+  <div id="cart-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-[60] flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+      <div class="p-6 border-b border-gray-200 flex items-center justify-between">
+        <h3 class="text-2xl font-bold text-gray-800">මිලදී ගැනීමේ කරත්තය</h3>
+        <button id="close-cart" class="text-gray-500 hover:text-gray-700 text-2xl">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div id="cart-items" class="flex-1 overflow-y-auto p-6">
+        <!-- Cart items will be loaded here -->
+      </div>
+      <div class="border-t border-gray-200 p-6">
+        <div class="flex justify-between items-center mb-4">
+          <span class="text-xl font-bold text-gray-800">මුළු එකතුව:</span>
+          <span id="cart-total" class="text-2xl font-bold text-orange-600">රු. 0</span>
+        </div>
+        <button id="checkout-btn" class="w-full bg-gradient-to-r from-orange-500 to-teal-500 text-white py-3 rounded-lg font-semibold hover:opacity-90 transition btn-primary">
+          ඇණවුම සම්පූර්ණ කරන්න
+        </button>
+        <!-- 
+          Backend Integration Note: 
+          මෙතනින් ඔබට API endpoint එකකට cart data POST කළ හැක.
+          උදා: fetch('/api/checkout', { method: 'POST', body: JSON.stringify(cart) })
+          Payment gateway integration එක backend එකේ secure ලෙස කළ යුතුය.
+        -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Dummy Products Data - Backend එකකින් fetch කළ හැක
+    // Database Connection: මෙතන products array එක API call එකකින් ලබා ගන්න
+    // උදා: fetch('/api/products').then(res => res.json())
+    const products = [
+      {
+        id: 1,
+        name: "Premium බලු ආහාර 5kg",
+        price: 3500,
+        image: "https://images.unsplash.com/photo-1589924691995-400dc9ecc119?w=400&h=400&fit=crop",
+        category: "ආහාර"
+      },
+      {
+        id: 2,
+        name: "පූසා සඳහා වියළි ආහාර 2kg",
+        price: 2800,
+        image: "https://images.unsplash.com/photo-1589924691991-cd4e5be9b0e0?w=400&h=400&fit=crop",
+        category: "ආහාර"
+      },
+      {
+        id: 3,
+        name: "ලෙදර් කරපටිය",
+        price: 1200,
+        image: "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=400&h=400&fit=crop",
+        category: "උපාංග"
+      },
+      {
+        id: 4,
+        name: "රබර් බෝලය",
+        price: 800,
+        image: "https://images.unsplash.com/photo-1598134493179-5640e0047c8c?w=400&h=400&fit=crop",
+        category: "සෙල්ලම් බඩු"
+      },
+      {
+        id: 5,
+        name: "පූසා ඇඳ",
+        price: 4500,
+        image: "https://images.unsplash.com/photo-1545249390-6bdfa286032f?w=400&h=400&fit=crop",
+        category: "ගෘහ භාණ්ඩ"
+      },
+      {
+        id: 6,
+        name: "බල්ලා සඳහා ෂැම්පු",
+        price: 1500,
+        image: "https://images.unsplash.com/photo-1568640347023-a616a30bc3bd?w=400&h=400&fit=crop",
+        category: "ග්‍රූමින්"
+      },
+      {
+        id: 7,
+        name: "සුරතල් Carrier Bag",
+        price: 3200,
+        image: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=400&h=400&fit=crop",
+        category: "උපාංග"
+      },
+      {
+        id: 8,
+        name: "Dental Chew Sticks",
+        price: 950,
+        image: "https://images.unsplash.com/photo-1576201836106-db1758fd1c97?w=400&h=400&fit=crop",
+        category: "ආහාර"
+      }
+    ];
+
+    // Cart State Management
+    let cart = [];
+
+    // Load products to page
+    function renderProducts() {
+      const grid = document.getElementById('products-grid');
+      grid.innerHTML = products.map(product => `
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+          <div class="h-48 bg-gray-200 overflow-hidden">
+            <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover hover:scale-110 transition duration-300">
+          </div>
+          <div class="p-5">
+            <span class="text-xs text-teal-600 font-semibold bg-teal-50 px-3 py-1 rounded-full">${product.category}</span>
+            <h4 class="text-lg font-bold text-gray-800 mt-3 mb-2">${product.name}</h4>
+            <div class="flex items-center justify-between mt-4">
+              <span class="text-2xl font-bold text-orange-600">රු. ${product.price.toLocaleString()}</span>
+              <button onclick="addToCart(${product.id})" class="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600 transition btn-primary">
+                <i class="fas fa-cart-plus"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Add to Cart Function
+    function addToCart(productId) {
+      const product = products.find(p => p.id === productId);
+      const existingItem = cart.find(item => item.id === productId);
+      
+      if (existingItem) {
+        existingItem.quantity++;
+      } else {
+        cart.push({ ...product, quantity: 1 });
+      }
+      
+      updateCartUI();
+      showToast(`${product.name} කරත්තයට එකතු කරන ලදී!`, 'success');
+    }
+
+    // Remove from Cart
+    function removeFromCart(productId) {
+      cart = cart.filter(item => item.id !== productId);
+      updateCartUI();
+      showToast('නිෂ්පාදනය ඉවත් කරන ලදී', 'info');
+    }
+
+    // Update Quantity
+    function updateQuantity(productId, change) {
+      const item = cart.find(item => item.id === productId);
+      if (item) {
+        item.quantity += change;
+        if (item.quantity <= 0) {
+          removeFromCart(productId);
+        } else {
+          updateCartUI();
+        }
+      }
+    }
+
+    // Update Cart UI
+    function updateCartUI() {
+      const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+      const cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      
+      document.getElementById('cart-count').textContent = cartCount;
+      document.getElementById('cart-count-mobile').textContent = cartCount;
+      document.getElementById('cart-total').textContent = `රු. ${cartTotal.toLocaleString()}`;
+      
+      const cartItemsContainer = document.getElementById('cart-items');
+      
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = `
+          <div class="text-center py-12">
+            <i class="fas fa-shopping-cart text-6xl text-gray-300 mb-4"></i>
+            <p class="text-gray-500 text-lg">ඔබගේ කරත්තය හිස්ය</p>
+          </div>
+        `;
+      } else {
+        cartItemsContainer.innerHTML = cart.map(item => `
+          <div class="flex items-center space-x-4 mb-4 pb-4 border-b border-gray-200">
+            <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded-lg">
+            <div class="flex-1">
+              <h4 class="font-semibold text-gray-800">${item.name}</h4>
+              <p class="text-orange-600 font-bold">රු. ${item.price.toLocaleString()}</p>
+              <div class="flex items-center space-x-3 mt-2">
+                <button onclick="updateQuantity(${item.id}, -1)" class="w-8 h-8 bg-gray-200 rounded-lg hover:bg-gray-300">
+                  <i class="fas fa-minus text-xs"></i>
+                </button>
+                <span class="font-semibold">${item.quantity}</span>
+                <button onclick="updateQuantity(${item.id}, 1)" class="w-8 h-8 bg-gray-200 rounded-lg hover:bg-gray-300">
+                  <i class="fas fa-plus text-xs"></i>
+                </button>
+              </div>
+            </div>
+            <button onclick="removeFromCart(${item.id})" class="text-red-500 hover:text-red-700">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        `).join('');
+      }
+    }
+
+    // Toast Notification
+    function showToast(message, type = 'success') {
+      const colors = {
+        success: 'bg-green-500',
+        error: 'bg-red-500',
+        info: 'bg-blue-500'
+      };
+      
+      const toast = document.createElement('div');
+      toast.className = `toast ${colors[type]} text-white px-6 py-4 rounded-lg shadow-lg flex items-center space-x-3 min-w-[300px]`;
+      toast.innerHTML = `
+        <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+        <span>${message}</span>
+      `;
+      
+      document.getElementById('toast-container').appendChild(toast);
+      
+      setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease forwards';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    // Mobile Menu Toggle
+    document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    });
+
+    // Cart Modal Toggle
+    function toggleCart() {
+      document.getElementById('cart-modal').classList.toggle('hidden');
+      document.body.style.overflow = document.getElementById('cart-modal').classList.contains('hidden') ? '' : 'hidden';
+    }
+
+    document.getElementById('cart-btn').addEventListener('click', toggleCart);
+    document.getElementById('cart-btn-mobile').addEventListener('click', toggleCart);
+    document.getElementById('close-cart').addEventListener('click', toggleCart);
+
+    // Click outside to close
+    document.getElementById('cart-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'cart-modal') toggleCart();
+    });
+
+    // Checkout Button
+    document.getElementById('checkout-btn').addEventListener('click', () => {
+      if (cart.length === 0) {
+        showToast('කරත්තය හිස්ය!', 'error');
+        return;
+      }
+      // Backend Integration: මෙතන order API call එක දාන්න
+      // fetch('/api/orders', { method: 'POST', body: JSON.stringify({ items: cart }) })
+      showToast('ඇණවුම සාර්ථකව ලැබුණි! අපි ඔබව සම්බන්ධ කර ගන්නෙමු.', 'success');
+      cart = [];
+      updateCartUI();
+      setTimeout(toggleCart, 1500);
+    });
+
+    // Contact Form Validation
+    document.getElementById('contact-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const message = document.getElementById('message').value.trim();
+      
+      let isValid = true;
+      
+      // Reset errors
+      document.querySelectorAll('[id$="-error"]').forEach(el => el.classList.add('hidden'));
+      
+      if (!name) {
+        document.getElementById('name-error').classList.remove('hidden');
+        isValid = false;
+      }
+      
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        document.getElementById('email-error').classList.remove('hidden');
+        isValid = false;
+      }
+      
+      if (!phone || phone.length < 10) {
+        document.getElementById('phone-error').classList.remove('hidden');
+        isValid = false;
+      }
+      
+      if (!message) {
+        document.getElementById('message-error').classList.remove('hidden');
+        isValid = false;
+      }
+      
+      if (isValid) {
+        // Backend Integration: මෙතන form data API එකට POST කරන්න
+        // fetch('/api/contact', { 
+        //   method: 'POST', 
+        //   headers: {'Content-Type': 'application/json'},
+        //   body: JSON.stringify({ name, email, phone, message }) 
+        // })
+        showToast('පණිවිඩය සාර්ථකව යවන ලදී! අපි ඉක්මනින් සම්බන්ධ වන්නෙමු.', 'success');
+        document.getElementById('contact-form').reset();
+      }
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Close mobile menu if open
+          document.getElementById('mobile-menu').classList.add('hidden');
+        }
+      });
+    });
+
+    // Initialize
+    renderProducts();
+    updateCartUI();
+
+    /* 
+     * Frontend Extension Notes:
+     * 
+     * 1. Database Connection: 
+     *    - Replace dummy products array with fetch('/api/products')
+     *    - Use fetch API for CRUD operations
+     * 
+     * 2. Backend Setup:
+     *    - Recommended: Node.js + Express, PHP + Laravel, or Python + Django
+     *    - Database: MySQL, PostgreSQL, or MongoDB
+     *    - API endpoints: /api/products, /api/orders, /api/contact
+     * 
+     * 3. General Deployment:
+     *    - Frontend: Host on Vercel, Netlify, or Cloudflare Pages
+     *    - Use environment variables for API URLs
+     * 
+     * 4. Security: 
+     *    - Implement CORS policies on backend
+     *    - Validate all inputs server-side
+     *    - Use HTTPS only for all requests
+     */
+  </script>
+<script>(function(){document.addEventListener("click",function(e){var a=e.target.closest("[data-product-id]");if(!a)return;e.preventDefault();var pid=a.getAttribute("data-product-id");if(pid)parent.postMessage({type:"ecto-artifact-link-click",productId:pid},"*")})})();</script>
+</body>
+</html>
